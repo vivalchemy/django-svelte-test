@@ -13,6 +13,7 @@
   let font_family: string;
   let text_position: number;
   let image: FileList;
+  let csv: FileList;
 
   async function postData() {
     const formData = new FormData();
@@ -33,6 +34,13 @@
     });
     const data = await res.json();
     console.log(data);
+  }
+
+  async function showImage() {
+    if (image.length > 0) {
+      const src = URL.createObjectURL(image[0]);
+      document.querySelector("#imgPreview").setAttribute("src", src);
+    }
   }
 </script>
 
@@ -89,13 +97,26 @@
     required
   />
   <label for="image">Image</label>
-  <input type="file" name="image" accept="image/*" bind:files={image} />
+  <input
+    type="file"
+    name="image"
+    accept="image/*"
+    bind:files={image}
+    on:change={showImage}
+  />
+  <!-- <label for="csvFile">CSV File(name, email)</label> -->
+  <!--   <input -->
+  <!--     type="file" -->
+  <!--     name="csv" -->
+  <!--     accept="document/csv" -->
+  <!--     bind:files={csv} -->
+  <!--   /> -->
+
   <button
     type="submit"
     class="px-4 py-2 col-span-2 bg-slate-950 text-white rounded-md"
     >Submit</button
   >
-  {#if image}
-    <h3>{image[0].size / 1024}</h3>
-  {/if}
 </form>
+
+<img src="" alt="" id="imgPreview" />
